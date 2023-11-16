@@ -1,0 +1,45 @@
+#include "letter.h"
+
+wchar_t latin_alphabet_with_epsilon[SIZE_OF_LATIN_ALPHABET_WITH_EPSILON] = {L'a', L'b', L'c', L'd', L'e', L'f', L'g', L'h', L'i', L'j', L'k', L'l', L'm', L'n', L'o', L'p', L'q', L'r', L's', L't', L'u', L'v', L'w', L'x', L'y', L'z', L'0', L'1', L'2', L'3', L'4', L'5', L'6', L'7', L'8', L'9', L'ε', L'|', L'*', L'(', L')'};
+
+letter letter_a = latin_alphabet_with_epsilon + 0;
+letter letter_b = latin_alphabet_with_epsilon + 1;
+letter letter_c = latin_alphabet_with_epsilon + 2;
+letter letter_d = latin_alphabet_with_epsilon + 3;
+letter letter_e = latin_alphabet_with_epsilon + 4;
+letter letter_f = latin_alphabet_with_epsilon + 5;
+letter letter_g = latin_alphabet_with_epsilon + 6;
+letter letter_h = latin_alphabet_with_epsilon + 7;
+letter letter_i = latin_alphabet_with_epsilon + 8;
+letter letter_j = latin_alphabet_with_epsilon + 9;
+letter letter_k = latin_alphabet_with_epsilon + 10;
+letter letter_l = latin_alphabet_with_epsilon + 11;
+letter letter_m = latin_alphabet_with_epsilon + 12;
+letter letter_n = latin_alphabet_with_epsilon + 13;
+letter letter_o = latin_alphabet_with_epsilon + 14;
+letter letter_p = latin_alphabet_with_epsilon + 15;
+letter letter_q = latin_alphabet_with_epsilon + 16;
+letter letter_r = latin_alphabet_with_epsilon + 17;
+letter letter_s = latin_alphabet_with_epsilon + 18;
+letter letter_t = latin_alphabet_with_epsilon + 19;
+letter letter_u = latin_alphabet_with_epsilon + 20;
+letter letter_v = latin_alphabet_with_epsilon + 21;
+letter letter_w = latin_alphabet_with_epsilon + 22;
+letter letter_x = latin_alphabet_with_epsilon + 23;
+letter letter_y = latin_alphabet_with_epsilon + 24;
+letter letter_z = latin_alphabet_with_epsilon + 25;
+letter letter_0 = latin_alphabet_with_epsilon + 26;
+letter letter_1 = latin_alphabet_with_epsilon + 27;
+letter letter_2 = latin_alphabet_with_epsilon + 28;
+letter letter_3 = latin_alphabet_with_epsilon + 29;
+letter letter_4 = latin_alphabet_with_epsilon + 30;
+letter letter_5 = latin_alphabet_with_epsilon + 31;
+letter letter_6 = latin_alphabet_with_epsilon + 32;
+letter letter_7 = latin_alphabet_with_epsilon + 33;
+letter letter_8 = latin_alphabet_with_epsilon + 34;
+letter letter_9 = latin_alphabet_with_epsilon + 35;
+letter letter_epsilon = latin_alphabet_with_epsilon + 36;
+letter letter_bar = latin_alphabet_with_epsilon + 37;
+letter letter_star = latin_alphabet_with_epsilon + 38;
+letter letter_bracket_open = latin_alphabet_with_epsilon + 39;
+letter letter_bracket_closed = latin_alphabet_with_epsilon + 40;
