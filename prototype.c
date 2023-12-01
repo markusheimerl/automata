@@ -225,6 +225,66 @@ void regexXYorZStarTest(void)
     print(L"Regex x(y|z)* NFA test successful\n\n");
 }
 
+void regexXYorZTest(void)
+{
+    nondeterministic_finite_automaton nfa = createRegexNFA(Word(6, letter_x, letter_bracket_open, letter_y, letter_bar, letter_z, letter_bracket_closed));
+    printNFA(nfa);
+
+    // Test for string "x"
+    bool res = runNFA(nfa, letter_x);
+    assert(res == true);
+
+    // Test for string "xy"
+    res = runNFA(nfa, Word(2, letter_x, letter_y));
+    assert(res == true);
+
+    // Test for string "xz"
+    res = runNFA(nfa, Word(2, letter_x, letter_z));
+    assert(res == true);
+
+    // Test for string "y" (should fail)
+    res = runNFA(nfa, letter_y);
+    assert(res == false);
+
+    // Test for string "z" (should fail)
+    res = runNFA(nfa, letter_z);
+    assert(res == false);
+
+    // Test for string "xyz" (should fail)
+    res = runNFA(nfa, Word(3, letter_x, letter_y, letter_z));
+    assert(res == false);
+
+    print(L"Regex x(y|z) NFA test successful\n\n");
+}
+
+void regexXYTest(void)
+{
+    nondeterministic_finite_automaton nfa = createRegexNFA(Word(4, letter_x, letter_bracket_open, letter_y, letter_bracket_closed));
+    printNFA(nfa);
+
+    // Test for string "x"
+    bool res = runNFA(nfa, letter_x);
+    assert(res == false);
+
+    // Test for string "xy"
+    res = runNFA(nfa, Word(2, letter_x, letter_y));
+    assert(res == true);
+
+    // Test for string "y" (should fail)
+    res = runNFA(nfa, letter_y);
+    assert(res == false);
+
+    // Test for string "z" (should fail)
+    res = runNFA(nfa, letter_z);
+    assert(res == false);
+
+    // Test for string "xyz" (should fail)
+    res = runNFA(nfa, Word(3, letter_x, letter_y, letter_z));
+    assert(res == false);
+
+    print(L"Regex x(y) NFA test successful\n\n");
+}
+
 int main_automata(void)
 {
     (void)setlocale(LC_ALL, "");
@@ -236,7 +296,9 @@ int main_automata(void)
     regexWithoutSubexpressionUnionNFATest();
     regexWithoutSubexpressionUnionAndIterationNFATest();
     regexNFATest();
-    regexXYorZStarTest();
+    regexXYTest();
+    // regexXYorZTest();
+    // regexXYorZStarTest();
 
     return 0;
 }

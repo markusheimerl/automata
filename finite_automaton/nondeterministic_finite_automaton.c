@@ -558,6 +558,7 @@ nondeterministic_finite_automaton createRegexNFAWithoutSubexpression(word regex_
 
 nondeterministic_finite_automaton createRegexNFA(word regex)
 {
+    static unsigned int end = 0;
     nondeterministic_finite_automaton nfa1 = NULL;
     nondeterministic_finite_automaton nfa2 = NULL;
     nondeterministic_finite_automaton nfa3 = NULL;
@@ -568,14 +569,16 @@ nondeterministic_finite_automaton createRegexNFA(word regex)
 
         if (let == letter_bracket_closed)
         {
+            print(L"%lw", regex);
+            end = i;
             break;
         }
         else if (let == letter_bracket_open)
         {
+            print(L"%lw", regex);
             if (nfa2 == NULL)
             {
                 nfa2 = nfa1;
-                nfa1 = NULL;
             }
             else
             {
@@ -584,6 +587,7 @@ nondeterministic_finite_automaton createRegexNFA(word regex)
 
             word subregex = getSubword(regex, i + 1, getLength(regex));
             nfa1 = createRegexNFA(subregex);
+            i += end + 1;
         }
         else if (let == letter_star)
         {
@@ -615,7 +619,6 @@ nondeterministic_finite_automaton createRegexNFA(word regex)
             if (nfa2 == NULL)
             {
                 nfa2 = nfa1;
-                nfa1 = NULL;
             }
             else
             {
