@@ -236,7 +236,7 @@ int main_automata(void)
     regexWithoutSubexpressionUnionNFATest();
     regexWithoutSubexpressionUnionAndIterationNFATest();
     regexNFATest();
-    // regexXYorZStarTest();
+    regexXYorZStarTest();
 
     return 0;
 }

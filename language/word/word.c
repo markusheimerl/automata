@@ -13,7 +13,7 @@ word Word(unsigned int n, ...)
     for (unsigned int i = 0; i < n; i++)
     {
         void *w_or_l = va_arg(args, void *);
-        if (w_or_l >= (void *)latin_alphabet_with_epsilon && w_or_l < (void *)(latin_alphabet_with_epsilon + (SIZE_OF_LATIN_ALPHABET_WITH_EPSILON - 1)))
+        if (w_or_l >= (void *)latin_alphabet_with_epsilon && w_or_l < (void *)(latin_alphabet_with_epsilon + SIZE_OF_LATIN_ALPHABET_WITH_EPSILON))
         {
             total_length++;
         }
@@ -35,7 +35,7 @@ word Word(unsigned int n, ...)
     for (unsigned int i = 0; i < n; i++)
     {
         void *w_or_l = va_arg(args, void *);
-        if (w_or_l >= (void *)latin_alphabet_with_epsilon && w_or_l < (void *)(latin_alphabet_with_epsilon + (SIZE_OF_LATIN_ALPHABET_WITH_EPSILON - 1)))
+        if (w_or_l >= (void *)latin_alphabet_with_epsilon && w_or_l < (void *)(latin_alphabet_with_epsilon + SIZE_OF_LATIN_ALPHABET_WITH_EPSILON))
         {
             contents[index] = w_or_l;
             index++;
