@@ -508,10 +508,12 @@ nondeterministic_finite_automaton createRegexNFAWithoutSubexpression(word regex_
                 if (nfa2 == NULL)
                 {
                     nfa3 = nfa1;
+                    nfa1 = NULL;
                 }
                 else
                 {
                     nfa3 = nfa2;
+                    nfa2 = NULL;
                 }
             }
             else
@@ -524,6 +526,7 @@ nondeterministic_finite_automaton createRegexNFAWithoutSubexpression(word regex_
             if (nfa2 == NULL)
             {
                 nfa2 = nfa1;
+                nfa1 = NULL;
             }
             else
             {
