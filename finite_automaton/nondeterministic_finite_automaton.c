@@ -555,3 +555,92 @@ nondeterministic_finite_automaton createRegexNFAWithoutSubexpression(word regex_
         return createUnionNFA(nfa2, nfa3);
     }
 }
+
+nondeterministic_finite_automaton createRegexNFA(word regex)
+{
+    nondeterministic_finite_automaton nfa1 = NULL;
+    nondeterministic_finite_automaton nfa2 = NULL;
+    nondeterministic_finite_automaton nfa3 = NULL;
+
+    for (unsigned int i = 0; i < getLength(regex); i++)
+    {
+        letter let = getLetterByIndex(regex, i);
+
+        if (let == letter_bracket_closed)
+        {
+            break;
+        }
+        else if (let == letter_bracket_open)
+        {
+            if (nfa2 == NULL)
+            {
+                nfa2 = nfa1;
+                nfa1 = NULL;
+            }
+            else
+            {
+                nfa2 = createConcatinationNFA(nfa2, nfa1);
+            }
+
+            word subregex = getSubword(regex, i + 1, getLength(regex));
+            nfa1 = createRegexNFA(subregex);
+        }
+        else if (let == letter_star)
+        {
+            assert(nfa1 != NULL);
+            nfa1 = createIterationNFA(nfa1);
+        }
+        else if (let == letter_bar)
+        {
+            if (nfa3 == NULL)
+            {
+                if (nfa2 == NULL)
+                {
+                    nfa3 = nfa1;
+                    nfa1 = NULL;
+                }
+                else
+                {
+                    nfa3 = nfa2;
+                    nfa2 = NULL;
+                }
+            }
+            else
+            {
+                nfa3 = createUnionNFA(nfa2, nfa3);
+            }
+        }
+        else
+        {
+            if (nfa2 == NULL)
+            {
+                nfa2 = nfa1;
+                nfa1 = NULL;
+            }
+            else
+            {
+                nfa2 = createConcatinationNFA(nfa2, nfa1);
+            }
+
+            nfa1 = createLetterNFA(let);
+        }
+    }
+
+    if (nfa2 == NULL)
+    {
+        nfa2 = nfa1;
+    }
+    else
+    {
+        nfa2 = createConcatinationNFA(nfa2, nfa1);
+    }
+
+    if (nfa3 == NULL)
+    {
+        return nfa2;
+    }
+    else
+    {
+        return createUnionNFA(nfa2, nfa3);
+    }
+}

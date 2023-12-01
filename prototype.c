@@ -116,6 +116,115 @@ void regexWithoutSubexpressionUnionAndIterationNFATest(void)
     print(L"Regex without subexpression union and iteration NFA test successful\n\n");
 }
 
+void regexNFATest(void)
+{
+    nondeterministic_finite_automaton nfa = createRegexNFA(Word(2, letter_x, letter_y));
+    printNFA(nfa);
+    bool res = runNFA(nfa, Word(2, letter_x, letter_y));
+    assert(res == true);
+    res = runNFA(nfa, Word(3, letter_x, letter_x, letter_z));
+    assert(res == false);
+    res = runNFA(nfa, letter_x);
+    assert(res == false);
+    res = runNFA(nfa, letter_y);
+    assert(res == false);
+    res = runNFA(nfa, Word(2, letter_x, letter_x));
+    assert(res == false);
+    res = runNFA(nfa, NULL);
+    assert(res == false);
+    res = runNFA(nfa, Word(3, letter_x, letter_y, letter_z));
+    assert(res == false);
+    print(L"Regex NFA test successful\n\n");
+
+    nfa = createRegexNFA(Word(3, letter_x, letter_bar, letter_y));
+    printNFA(nfa);
+    res = runNFA(nfa, letter_x);
+    assert(res == true);
+    res = runNFA(nfa, letter_y);
+    assert(res == true);
+    res = runNFA(nfa, letter_z);
+    assert(res == false);
+    res = runNFA(nfa, Word(2, letter_x, letter_y));
+    assert(res == false);
+    print(L"Regex union NFA test successful\n\n");
+
+    nfa = createRegexNFA(Word(4, letter_x, letter_bar, letter_y, letter_star));
+    printNFA(nfa);
+    res = runNFA(nfa, letter_x);
+    assert(res == true);
+    res = runNFA(nfa, NULL);
+    assert(res == true);
+    res = runNFA(nfa, letter_y);
+    assert(res == true);
+    res = runNFA(nfa, Word(2, letter_y, letter_y));
+    assert(res == true);
+    res = runNFA(nfa, Word(3, letter_y, letter_y, letter_y));
+    assert(res == true);
+    res = runNFA(nfa, Word(2, letter_y, letter_z));
+    assert(res == false);
+    res = runNFA(nfa, Word(2, letter_x, letter_y));
+    assert(res == false);
+    print(L"Regex union and iteration NFA test successful\n\n");
+
+    nfa = createRegexNFA(Word(4, letter_x, letter_bar, letter_y, letter_star));
+    printNFA(nfa);
+    res = runNFA(nfa, letter_x);
+    assert(res == true);
+    res = runNFA(nfa, NULL);
+    assert(res == true);
+    res = runNFA(nfa, letter_y);
+    assert(res == true);
+    res = runNFA(nfa, Word(2, letter_y, letter_y));
+    assert(res == true);
+    res = runNFA(nfa, Word(3, letter_y, letter_y, letter_y));
+    assert(res == true);
+    res = runNFA(nfa, Word(2, letter_y, letter_z));
+    assert(res == false);
+    res = runNFA(nfa, Word(2, letter_x, letter_y));
+    assert(res == false);
+    print(L"Regex union and iteration NFA test successful\n\n");
+}
+
+void regexXYorZStarTest(void)
+{
+    nondeterministic_finite_automaton nfa = createRegexNFA(Word(7, letter_x, letter_bracket_open, letter_y, letter_bar, letter_z, letter_bracket_closed, letter_star));
+    printNFA(nfa);
+
+    // Test for string "x"
+    bool res = runNFA(nfa, letter_x);
+    assert(res == true);
+
+    // Test for string "xy"
+    res = runNFA(nfa, Word(2, letter_x, letter_y));
+    assert(res == true);
+
+    // Test for string "xz"
+    res = runNFA(nfa, Word(2, letter_x, letter_z));
+    assert(res == true);
+
+    // Test for string "xyyz"
+    res = runNFA(nfa, Word(4, letter_x, letter_y, letter_y, letter_z));
+    assert(res == true);
+
+    // Test for string "xzzz"
+    res = runNFA(nfa, Word(4, letter_x, letter_z, letter_z, letter_z));
+    assert(res == true);
+
+    // Test for string "y" (should fail)
+    res = runNFA(nfa, letter_y);
+    assert(res == false);
+
+    // Test for string "zz" (should fail)
+    res = runNFA(nfa, Word(2, letter_z, letter_z));
+    assert(res == false);
+
+    // Test for string "xyz" (should fail)
+    res = runNFA(nfa, Word(3, letter_x, letter_y, letter_z));
+    assert(res == false);
+
+    print(L"Regex x(y|z)* NFA test successful\n\n");
+}
+
 int main_automata(void)
 {
     (void)setlocale(LC_ALL, "");
@@ -126,6 +235,8 @@ int main_automata(void)
     regexWithoutSubexpressionNFATest();
     regexWithoutSubexpressionUnionNFATest();
     regexWithoutSubexpressionUnionAndIterationNFATest();
+    regexNFATest();
+    // regexXYorZStarTest();
 
     return 0;
 }
