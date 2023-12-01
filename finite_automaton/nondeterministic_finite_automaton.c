@@ -569,13 +569,11 @@ nondeterministic_finite_automaton createRegexNFA(word regex)
 
         if (let == letter_bracket_closed)
         {
-            print(L"%lw", regex);
             end = i;
             break;
         }
         else if (let == letter_bracket_open)
         {
-            print(L"%lw", regex);
             if (nfa2 == NULL)
             {
                 nfa2 = nfa1;

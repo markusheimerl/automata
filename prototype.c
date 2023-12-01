@@ -232,7 +232,7 @@ void regexXYorZTest(void)
 
     // Test for string "x"
     bool res = runNFA(nfa, letter_x);
-    assert(res == true);
+    assert(res == false);
 
     // Test for string "xy"
     res = runNFA(nfa, Word(2, letter_x, letter_y));
@@ -285,6 +285,34 @@ void regexXYTest(void)
     print(L"Regex x(y) NFA test successful\n\n");
 }
 
+void regexXYorZWithoutBraketsTest(void)
+{
+    nondeterministic_finite_automaton nfa = createRegexNFA(Word(4, letter_x, letter_y, letter_bar, letter_z));
+    printNFA(nfa);
+
+    // Test for string "x" (should fail)
+    bool res = runNFA(nfa, letter_x);
+    assert(res == false);
+
+    // Test for string "xy"
+    res = runNFA(nfa, Word(2, letter_x, letter_y));
+    assert(res == true);
+
+    // Test for string "z"
+    res = runNFA(nfa, letter_z);
+    assert(res == true);
+
+    // Test for string "y" (should fail)
+    res = runNFA(nfa, letter_y);
+    assert(res == false);
+
+    // Test for string "xyz" (should fail)
+    res = runNFA(nfa, Word(3, letter_x, letter_y, letter_z));
+    assert(res == false);
+
+    print(L"Regex xy|z NFA test successful\n\n");
+}
+
 int main_automata(void)
 {
     (void)setlocale(LC_ALL, "");
@@ -297,6 +325,7 @@ int main_automata(void)
     regexWithoutSubexpressionUnionAndIterationNFATest();
     regexNFATest();
     regexXYTest();
+    regexXYorZWithoutBraketsTest();
     // regexXYorZTest();
     // regexXYorZStarTest();
 
