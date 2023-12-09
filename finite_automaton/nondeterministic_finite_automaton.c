@@ -219,6 +219,13 @@ nondeterministic_finite_automaton createLetterNFA(letter let)
 
 nondeterministic_finite_automaton createConcatinationNFA(nondeterministic_finite_automaton nfa_left, nondeterministic_finite_automaton nfa_right)
 {
+    if (nfa_left == NULL && nfa_right == NULL)
+        return NULL;
+    else if (nfa_left == NULL)
+        return nfa_right;
+    else if (nfa_right == NULL)
+        return nfa_left;
+
     set states_left = getObjectByIndex(nfa_left, 0);
     set alphabet_left = getObjectByIndex(nfa_left, 1);
     delta_function delta_left = getObjectByIndex(nfa_left, 2);
@@ -319,6 +326,13 @@ nondeterministic_finite_automaton createConcatinationNFA(nondeterministic_finite
 
 nondeterministic_finite_automaton createUnionNFA(nondeterministic_finite_automaton nfa_left, nondeterministic_finite_automaton nfa_right)
 {
+    if (nfa_left == NULL && nfa_right == NULL)
+        return NULL;
+    else if (nfa_left == NULL)
+        return nfa_right;
+    else if (nfa_right == NULL)
+        return nfa_left;
+
     set states_left = getObjectByIndex(nfa_left, 0);
     set alphabet_left = getObjectByIndex(nfa_left, 1);
     function delta_left = getObjectByIndex(nfa_left, 2);
@@ -424,6 +438,9 @@ nondeterministic_finite_automaton createUnionNFA(nondeterministic_finite_automat
 
 nondeterministic_finite_automaton createIterationNFA(nondeterministic_finite_automaton nfa_iter)
 {
+    if (nfa_iter == NULL)
+        return NULL;
+
     set states_iter = getObjectByIndex(nfa_iter, 0);
     set alphabet_iter = getObjectByIndex(nfa_iter, 1);
     delta_function delta_iter = getObjectByIndex(nfa_iter, 2);
@@ -486,168 +503,6 @@ nondeterministic_finite_automaton createIterationNFA(nondeterministic_finite_aut
     return NondeterministicFiniteAutomaton(states, alphabet, delta, start, addToSet(Set(), final_state));
 }
 
-nondeterministic_finite_automaton createRegexNFAWithoutSubexpression(word regex_without_subexpression)
-{
-    nondeterministic_finite_automaton nfa1 = NULL;
-    nondeterministic_finite_automaton nfa2 = NULL;
-    nondeterministic_finite_automaton nfa3 = NULL;
-
-    for (unsigned int i = 0; i < getLength(regex_without_subexpression); i++)
-    {
-        letter let = getLetterByIndex(regex_without_subexpression, i);
-
-        if (let == letter_star)
-        {
-            assert(nfa1 != NULL);
-            nfa1 = createIterationNFA(nfa1);
-        }
-        else if (let == letter_bar)
-        {
-            if (nfa3 == NULL)
-            {
-                if (nfa2 == NULL)
-                {
-                    nfa3 = nfa1;
-                    nfa1 = NULL;
-                }
-                else
-                {
-                    nfa3 = nfa2;
-                    nfa2 = NULL;
-                }
-            }
-            else
-            {
-                nfa3 = createUnionNFA(nfa2, nfa3);
-            }
-        }
-        else
-        {
-            if (nfa2 == NULL)
-            {
-                nfa2 = nfa1;
-                nfa1 = NULL;
-            }
-            else
-            {
-                nfa2 = createConcatinationNFA(nfa2, nfa1);
-            }
-
-            nfa1 = createLetterNFA(let);
-        }
-    }
-
-    if (nfa2 == NULL)
-    {
-        nfa2 = nfa1;
-    }
-    else
-    {
-        nfa2 = createConcatinationNFA(nfa2, nfa1);
-    }
-
-    if (nfa3 == NULL)
-    {
-        return nfa2;
-    }
-    else
-    {
-        return createUnionNFA(nfa2, nfa3);
-    }
-}
-
-nondeterministic_finite_automaton createRegexNFA1(word regex)
-{
-    static unsigned int end = 0;
-    nondeterministic_finite_automaton nfa1 = NULL;
-    nondeterministic_finite_automaton nfa2 = NULL;
-    nondeterministic_finite_automaton nfa3 = NULL;
-
-    for (unsigned int i = 0; i < getLength(regex); i++)
-    {
-        letter let = getLetterByIndex(regex, i);
-
-        if (let == letter_bracket_closed)
-        {
-            end = i;
-            break;
-        }
-        else if (let == letter_bracket_open)
-        {
-            if (nfa2 == NULL)
-            {
-                nfa2 = nfa1;
-            }
-            else
-            {
-                nfa2 = createConcatinationNFA(nfa2, nfa1);
-            }
-
-            word subregex = getSubword(regex, i + 1, getLength(regex));
-            nfa1 = createRegexNFA(subregex);
-            i += end + 1;
-        }
-        else if (let == letter_star)
-        {
-            assert(nfa1 != NULL);
-            nfa1 = createIterationNFA(nfa1);
-        }
-        else if (let == letter_bar)
-        {
-            if (nfa3 == NULL)
-            {
-                if (nfa2 == NULL)
-                {
-                    nfa3 = nfa1;
-                    nfa1 = NULL;
-                }
-                else
-                {
-                    nfa2 = createConcatinationNFA(nfa2, nfa1);
-                    nfa3 = nfa2;
-                    nfa2 = NULL;
-                    nfa1 = NULL;
-                }
-            }
-            else
-            {
-                nfa3 = createUnionNFA(nfa2, nfa3);
-            }
-        }
-        else
-        {
-            if (nfa2 == NULL)
-            {
-                nfa2 = nfa1;
-            }
-            else
-            {
-                nfa2 = createConcatinationNFA(nfa2, nfa1);
-            }
-
-            nfa1 = createLetterNFA(let);
-        }
-    }
-
-    if (nfa2 == NULL)
-    {
-        nfa2 = nfa1;
-    }
-    else
-    {
-        nfa2 = createConcatinationNFA(nfa2, nfa1);
-    }
-
-    if (nfa3 == NULL)
-    {
-        return nfa2;
-    }
-    else
-    {
-        return createUnionNFA(nfa2, nfa3);
-    }
-}
-
 nondeterministic_finite_automaton createRegexNFA(word regex)
 {
     static unsigned int end = 0;
@@ -678,7 +533,7 @@ nondeterministic_finite_automaton createRegexNFA(word regex)
         else if (let == letter_bar)
         {
             nfa2 = createConcatinationNFA(nfa2, nfa1);
-            nfa3 = createUnionNFA(nfa2, nfa3);
+            nfa3 = createUnionNFA(nfa3, nfa2);
         }
         else
         {
@@ -688,6 +543,6 @@ nondeterministic_finite_automaton createRegexNFA(word regex)
     }
 
     nfa2 = createConcatinationNFA(nfa2, nfa1);
-    nfa3 = createUnionNFA(nfa2, nfa3);
+    nfa3 = createUnionNFA(nfa3, nfa2);
     return nfa3;
 }
