@@ -533,6 +533,7 @@ nondeterministic_finite_automaton createRegexNFA(word regex)
         else if (let == letter_bar)
         {
             nfa2 = createConcatinationNFA(nfa2, nfa1);
+            nfa1 = NULL;
             nfa3 = createUnionNFA(nfa3, nfa2);
         }
         else
