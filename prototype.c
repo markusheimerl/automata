@@ -121,7 +121,7 @@ int main_automata(void)
     nondeterministic_finite_automaton nfa = createRegexNFA(wordFromString(L"a*"));
     printNFA(nfa);
 
-    regexNFATest();
+    regexNFATest3();
 
     return 0;
 }

@@ -264,7 +264,7 @@ nondeterministic_finite_automaton createConcatinationNFA(nondeterministic_finite
         alphabet = addToSet(alphabet, let);
     }
 
-    delta_function delta = DeltaFunction();
+    relation delta_relation = Relation();
     for (unsigned int i = 0; i < getCardinality(delta_left); i++)
     {
         n_tuple tuple = drawFromSet(delta_left);
@@ -279,7 +279,7 @@ nondeterministic_finite_automaton createConcatinationNFA(nondeterministic_finite
         {
             word next_state = drawFromSet(to);
             next_state = Word(2, next_state, letter_l);
-            delta = addToDeltaFunction(delta, state, let, addToSet(Set(), next_state));
+            delta_relation = addToRelation(delta_relation, addToSet(addToSet(Set(), state), let), addToSet(Set(), next_state));
         }
     }
     for (unsigned int i = 0; i < getCardinality(delta_right); i++)
@@ -296,7 +296,7 @@ nondeterministic_finite_automaton createConcatinationNFA(nondeterministic_finite
         {
             word next_state = drawFromSet(to);
             next_state = Word(2, next_state, letter_r);
-            delta = addToDeltaFunction(delta, state, let, addToSet(Set(), next_state));
+            delta_relation = addToRelation(delta_relation, addToSet(addToSet(Set(), state), let), addToSet(Set(), next_state));
         }
     }
 
@@ -305,21 +305,23 @@ nondeterministic_finite_automaton createConcatinationNFA(nondeterministic_finite
     states = addToSet(states, start);
     states = addToSet(states, final_state);
 
-    delta = addToDeltaFunction(delta, start, letter_epsilon, addToSet(Set(), Word(2, start_left, letter_l)));
+    delta_relation = addToRelation(delta_relation, addToSet(addToSet(Set(), start), letter_epsilon), addToSet(Set(), Word(2, start_left, letter_l)));
 
     for (unsigned int i = 0; i < getCardinality(final_states_left); i++)
     {
         word state = drawFromSet(final_states_left);
         state = Word(2, state, letter_l);
-        delta = addToDeltaFunction(delta, state, letter_epsilon, addToSet(Set(), Word(2, start_right, letter_r)));
+        delta_relation = addToRelation(delta_relation, addToSet(addToSet(Set(), state), letter_epsilon), addToSet(Set(), Word(2, start_right, letter_r)));
     }
 
     for (unsigned int i = 0; i < getCardinality(final_states_right); i++)
     {
         word state = drawFromSet(final_states_right);
         state = Word(2, state, letter_r);
-        delta = addToDeltaFunction(delta, state, letter_epsilon, addToSet(Set(), final_state));
+        delta_relation = addToRelation(delta_relation, addToSet(addToSet(Set(), state), letter_epsilon), addToSet(Set(), final_state));
     }
+
+    function delta = relationToDeltaFunction(delta_relation);
 
     return NondeterministicFiniteAutomaton(states, alphabet, delta, start, addToSet(Set(), final_state));
 }
