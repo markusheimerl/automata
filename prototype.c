@@ -6,29 +6,54 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+void regexNFATest1(void)
+{
+    nondeterministic_finite_automaton nfa = createRegexNFA(wordFromString(L"ba*"));
+    printNFA(nfa);
+
+    bool res = runNFA(nfa, NULL);
+    assert(res == false);
+    res = runNFA(nfa, letter_b);
+    assert(res == true);
+    res = runNFA(nfa, wordFromString(L"ba"));
+    assert(res == true);
+    res = runNFA(nfa, wordFromString(L"baa"));
+    assert(res == true);
+    res = runNFA(nfa, wordFromString(L"baaa"));
+    assert(res == true);
+    res = runNFA(nfa, wordFromString(L"baaaa"));
+    assert(res == true);
+    res = runNFA(nfa, wordFromString(L"baaaaa"));
+    assert(res == true);
+    res = runNFA(nfa, wordFromString(L"baaaaaa"));
+    assert(res == true);
+    res = runNFA(nfa, wordFromString(L"baaaaaaa"));
+    assert(res == true);
+    res = runNFA(nfa, letter_b);
+    assert(res == false);
+    res = runNFA(nfa, wordFromString(L"ab"));
+    assert(res == false);
+    res = runNFA(nfa, wordFromString(L"aba"));
+    assert(res == false);
+
+    print(L"Regex ba* NFA test successful\n\n");
+}
+
 void regexNFATest(void)
 {
-    nondeterministic_finite_automaton nfa = createRegexNFA(wordFromString(L"xy|z"));
+    nondeterministic_finite_automaton nfa = createRegexNFA(wordFromString(L"b|a*"));
     printNFA(nfa);
 
-    bool res = runNFA(nfa, letter_x);
-    assert(res == false);
-    res = runNFA(nfa, wordFromString(L"xy"));
+    bool res = runNFA(nfa, NULL);
     assert(res == true);
-    res = runNFA(nfa, letter_z);
+    res = runNFA(nfa, letter_b);
     assert(res == true);
-    res = runNFA(nfa, letter_y);
+    res = runNFA(nfa, wordFromString(L"ba"));
     assert(res == false);
-    res = runNFA(nfa, wordFromString(L"xyz"));
+    res = runNFA(nfa, wordFromString(L"baa"));
     assert(res == false);
-
-    print(L"Regex xy|z NFA test successful\n\n");
-
-    nfa = createRegexNFA(wordFromString(L"a*"));
-    printNFA(nfa);
-
-    res = runNFA(nfa, NULL);
-    assert(res == true);
+    res = runNFA(nfa, wordFromString(L"baaa"));
+    assert(res == false);
     res = runNFA(nfa, letter_a);
     assert(res == true);
     res = runNFA(nfa, wordFromString(L"aa"));
@@ -37,24 +62,8 @@ void regexNFATest(void)
     assert(res == true);
     res = runNFA(nfa, wordFromString(L"aaaa"));
     assert(res == true);
-    res = runNFA(nfa, wordFromString(L"aaaaa"));
-    assert(res == true);
-    res = runNFA(nfa, wordFromString(L"aaaaaa"));
-    assert(res == true);
-    res = runNFA(nfa, wordFromString(L"aaaaaaa"));
-    assert(res == true);
-    res = runNFA(nfa, wordFromString(L"aaaaaaaa"));
-    assert(res == true);
-    res = runNFA(nfa, letter_b);
-    assert(res == false);
-    res = runNFA(nfa, wordFromString(L"ab"));
-    assert(res == false);
-    res = runNFA(nfa, wordFromString(L"ba"));
-    assert(res == false);
-    res = runNFA(nfa, wordFromString(L"aba"));
-    assert(res == false);
 
-    print(L"Regex a* NFA test successful\n\n");
+    print(L"Regex b|a* NFA test successful\n\n");
 }
 
 int main_automata(void)
