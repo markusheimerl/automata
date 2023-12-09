@@ -8,7 +8,7 @@
 
 void regexNFATest(void)
 {
-    nondeterministic_finite_automaton nfa = createRegexNFA(Word(4, letter_x, letter_y, letter_bar, letter_z));
+    nondeterministic_finite_automaton nfa = createRegexNFA(wordFromString(L"xy|z"));
     printNFA(nfa);
 
     bool res = runNFA(nfa, letter_x);

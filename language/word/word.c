@@ -98,6 +98,46 @@ void print(const wchar_t *format, ...)
     va_end(args);
 }
 
+word wordFromString(const wchar_t *str)
+{
+    size_t length = wcslen(str);
+    void *contents[(length + 1)];
+    contents[0] = &length;
+    for (unsigned int i = 0; i < length; i++)
+    {
+        if (str[i] >= 97 && str[i] <= 122)
+        {
+            contents[i + 1] = (void *)(latin_alphabet_with_epsilon + (str[i] - 97));
+        }
+        else if (str[i] >= 48 && str[i] <= 57)
+        {
+            contents[i + 1] = (void *)(latin_alphabet_with_epsilon + 26 + (str[i] - 48));
+        }
+        else if (str[i] == L'ε')
+        {
+            contents[i + 1] = (void *)(latin_alphabet_with_epsilon + 36);
+        }
+        else if (str[i] == L'|')
+        {
+            contents[i + 1] = (void *)(latin_alphabet_with_epsilon + 37);
+        }
+        else if (str[i] == L'*')
+        {
+            contents[i + 1] = (void *)(latin_alphabet_with_epsilon + 38);
+        }
+        else if (str[i] == L'(')
+        {
+            contents[i + 1] = (void *)(latin_alphabet_with_epsilon + 39);
+        }
+        else if (str[i] == L')')
+        {
+            contents[i + 1] = (void *)(latin_alphabet_with_epsilon + 40);
+        }
+    }
+    n_tuple w = NTupleFromVoidPointerArray(contents);
+    return w;
+}
+
 letter getLetterByIndex(word w, unsigned int idx)
 {
     assert(idx < getLength(w));
