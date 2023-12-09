@@ -4,7 +4,7 @@
 
 enum
 {
-    default_size_of_the_universe = 1000
+    default_size_of_the_universe = 100000
 };
 
 set universe_of_discourse[default_size_of_the_universe] = {NULL};
