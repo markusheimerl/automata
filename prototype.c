@@ -287,7 +287,7 @@ void regexXYTest(void)
 
 void regexXYorZWithoutBraketsTest(void)
 {
-    nondeterministic_finite_automaton nfa = createRegexNFA(Word(4, letter_x, letter_y, letter_bar, letter_z));
+    nondeterministic_finite_automaton nfa = createRegexNFAWithoutSubexpression(Word(4, letter_x, letter_y, letter_bar, letter_z));
     printNFA(nfa);
 
     // Test for string "x" (should fail)

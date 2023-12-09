@@ -556,7 +556,7 @@ nondeterministic_finite_automaton createRegexNFAWithoutSubexpression(word regex_
     }
 }
 
-nondeterministic_finite_automaton createRegexNFA(word regex)
+nondeterministic_finite_automaton createRegexNFA1(word regex)
 {
     static unsigned int end = 0;
     nondeterministic_finite_automaton nfa1 = NULL;
@@ -603,8 +603,10 @@ nondeterministic_finite_automaton createRegexNFA(word regex)
                 }
                 else
                 {
+                    nfa2 = createConcatinationNFA(nfa2, nfa1);
                     nfa3 = nfa2;
                     nfa2 = NULL;
+                    nfa1 = NULL;
                 }
             }
             else
@@ -644,4 +646,48 @@ nondeterministic_finite_automaton createRegexNFA(word regex)
     {
         return createUnionNFA(nfa2, nfa3);
     }
+}
+
+nondeterministic_finite_automaton createRegexNFA(word regex)
+{
+    static unsigned int end = 0;
+    nondeterministic_finite_automaton nfa1 = NULL;
+    nondeterministic_finite_automaton nfa2 = NULL;
+    nondeterministic_finite_automaton nfa3 = NULL;
+
+    for (unsigned int i = 0; i < getLength(regex); i++)
+    {
+        letter let = getLetterByIndex(regex, i);
+
+        if (let == letter_bracket_closed)
+        {
+            end = i;
+            break;
+        }
+        else if (let == letter_bracket_open)
+        {
+            nfa2 = createConcatinationNFA(nfa2, nfa1);
+            word subregex = getSubword(regex, i + 1, getLength(regex));
+            nfa1 = createRegexNFA(subregex);
+            i += end + 1;
+        }
+        else if (let == letter_star)
+        {
+            nfa1 = createIterationNFA(nfa1);
+        }
+        else if (let == letter_bar)
+        {
+            nfa2 = createConcatinationNFA(nfa2, nfa1);
+            nfa3 = createUnionNFA(nfa2, nfa3);
+        }
+        else
+        {
+            nfa2 = createConcatinationNFA(nfa2, nfa1);
+            nfa1 = createLetterNFA(let);
+        }
+    }
+
+    nfa2 = createConcatinationNFA(nfa2, nfa1);
+    nfa3 = createUnionNFA(nfa2, nfa3);
+    return nfa3;
 }
