@@ -195,7 +195,7 @@ nondeterministic_finite_automaton NondeterministicFiniteAutomaton(set states, se
     return NTuple(5, states, alphabet, delta, start, final_states);
 }
 
-nondeterministic_finite_automaton createLetterNFA(letter let)
+nondeterministic_finite_automaton letterNFA(letter let)
 {
     // Q
     word q0 = Word(2, letter_q, letter_0);
@@ -217,7 +217,7 @@ nondeterministic_finite_automaton createLetterNFA(letter let)
     return NondeterministicFiniteAutomaton(states, alphabet, delta, q0, final_states);
 }
 
-nondeterministic_finite_automaton createConcatinationNFA(nondeterministic_finite_automaton nfa_left, nondeterministic_finite_automaton nfa_right)
+nondeterministic_finite_automaton concatinationNFA(nondeterministic_finite_automaton nfa_left, nondeterministic_finite_automaton nfa_right)
 {
     if (nfa_left == NULL && nfa_right == NULL)
         return NULL;
@@ -326,7 +326,7 @@ nondeterministic_finite_automaton createConcatinationNFA(nondeterministic_finite
     return NondeterministicFiniteAutomaton(states, alphabet, delta, start, addToSet(Set(), final_state));
 }
 
-nondeterministic_finite_automaton createUnionNFA(nondeterministic_finite_automaton nfa_left, nondeterministic_finite_automaton nfa_right)
+nondeterministic_finite_automaton unionNFA(nondeterministic_finite_automaton nfa_left, nondeterministic_finite_automaton nfa_right)
 {
     if (nfa_left == NULL && nfa_right == NULL)
         return NULL;
@@ -438,7 +438,7 @@ nondeterministic_finite_automaton createUnionNFA(nondeterministic_finite_automat
     return NondeterministicFiniteAutomaton(states, alphabet, delta, start, addToSet(Set(), final_state));
 }
 
-nondeterministic_finite_automaton createIterationNFA(nondeterministic_finite_automaton nfa_iter)
+nondeterministic_finite_automaton iterationNFA(nondeterministic_finite_automaton nfa_iter)
 {
     if (nfa_iter == NULL)
         return NULL;
@@ -505,7 +505,7 @@ nondeterministic_finite_automaton createIterationNFA(nondeterministic_finite_aut
     return NondeterministicFiniteAutomaton(states, alphabet, delta, start, addToSet(Set(), final_state));
 }
 
-nondeterministic_finite_automaton createRegexNFA(word regex)
+nondeterministic_finite_automaton regexNFA(word regex)
 {
     static unsigned int end = 0;
     nondeterministic_finite_automaton nfa1 = NULL;
@@ -523,30 +523,30 @@ nondeterministic_finite_automaton createRegexNFA(word regex)
         }
         else if (let == letter_bracket_open)
         {
-            nfa2 = createConcatinationNFA(nfa2, nfa1);
+            nfa2 = concatinationNFA(nfa2, nfa1);
             word subregex = getSubword(regex, i + 1, getLength(regex));
-            nfa1 = createRegexNFA(subregex);
+            nfa1 = regexNFA(subregex);
             i += end + 1;
         }
         else if (let == letter_star)
         {
-            nfa1 = createIterationNFA(nfa1);
+            nfa1 = iterationNFA(nfa1);
         }
         else if (let == letter_bar)
         {
-            nfa2 = createConcatinationNFA(nfa2, nfa1);
-            nfa3 = createUnionNFA(nfa3, nfa2);
+            nfa2 = concatinationNFA(nfa2, nfa1);
+            nfa3 = unionNFA(nfa3, nfa2);
             nfa1 = NULL;
             nfa2 = NULL;
         }
         else
         {
-            nfa2 = createConcatinationNFA(nfa2, nfa1);
-            nfa1 = createLetterNFA(let);
+            nfa2 = concatinationNFA(nfa2, nfa1);
+            nfa1 = letterNFA(let);
         }
     }
 
-    nfa2 = createConcatinationNFA(nfa2, nfa1);
-    nfa3 = createUnionNFA(nfa3, nfa2);
+    nfa2 = concatinationNFA(nfa2, nfa1);
+    nfa3 = unionNFA(nfa3, nfa2);
     return nfa3;
 }

@@ -9,7 +9,7 @@
 void regexNFATest(void)
 {
     // Simpler regex: (ab|cd)*(ef|gh)
-    nondeterministic_finite_automaton nfa = createRegexNFA(wordFromString(L"(ab|cd)*(ef|gh)"));
+    nondeterministic_finite_automaton nfa = regexNFA(wordFromString(L"(ab|cd)*(ef|gh)"));
     printNFA(nfa);
 
     // Test cases for strings that should match
