@@ -8,7 +8,8 @@
 typedef function delta_function;
 
 delta_function DeltaFunction(void);
-function addToDeltaFunction(delta_function f, word w, letter let, set to);
+delta_function relationToDeltaFunction(relation delta_relation);
+delta_function addToDeltaFunction(delta_function f, word w, letter let, set to);
 set getDeltaFunctionValue(delta_function f, word w, letter let);
 word getWordFromDomainElement(set from);
 letter getLetterFromDomainElement(set from);
