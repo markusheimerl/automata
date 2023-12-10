@@ -4,3 +4,5 @@ deterministic_finite_automaton DeterministicFiniteAutomaton(set states, set alph
 {
     return NTuple(5, states, alphabet, delta, start, final_states);
 }
+
+deterministic_finite_automaton nfaDFA(nondeterministic_finite_automaton nfa) {}
