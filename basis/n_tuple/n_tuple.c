@@ -4,8 +4,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// The first element of this array is a unsigned int pointer
-// to the size of the tuple.
 n_tuple NTupleFromVoidPointerArray(void **contents)
 {
     unsigned int n = *((unsigned int *)contents[0]);
