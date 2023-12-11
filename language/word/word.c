@@ -2,7 +2,7 @@
 #include "letter.h"
 #include <assert.h>
 #include <stdarg.h>
-#include <stdlib.h>
+#include <stdio.h>
 
 word Word(unsigned int n, ...)
 {
@@ -142,17 +142,6 @@ letter getLetterByIndex(word w, unsigned int idx)
 {
     assert(idx < getLength(w));
     return getObjectByIndex(w, idx);
-}
-
-wchar_t *getWordString(word w)
-{
-    wchar_t *str = malloc(sizeof(wchar_t) * (getLength(w) + 1));
-    for (unsigned int i = 0; i < getLength(w); i++)
-    {
-        str[i] = *getLetterByIndex(w, i);
-    }
-    str[getLength(w)] = L'\0';
-    return str;
 }
 
 word getSubword(word w, unsigned int start, unsigned int end)

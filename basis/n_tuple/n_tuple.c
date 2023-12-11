@@ -1,7 +1,6 @@
 #include "n_tuple.h"
 #include <assert.h>
 #include <stdarg.h>
-#include <stdio.h>
 #include <stdlib.h>
 
 n_tuple NTupleFromVoidPointerArray(void **contents)

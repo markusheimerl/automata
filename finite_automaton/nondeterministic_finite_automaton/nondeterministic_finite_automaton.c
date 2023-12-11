@@ -1,6 +1,5 @@
 #include "nondeterministic_finite_automaton.h"
 #include <assert.h>
-#include <stdio.h>
 
 static set consumeLetter(nondeterministic_finite_automaton nfa, set states, letter let)
 {
