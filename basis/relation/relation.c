@@ -16,7 +16,7 @@ relation addToRelation(relation r, void *from, void *to)
 set getRelationValue(relation r, void *from)
 {
     set result = Set();
-    for (unsigned int i = 0; i < getSize(r); i++)
+    for (unsigned int i = 0; i < getCardinality(r); i++)
     {
         n_tuple t = drawFromSet(r);
         if (getObjectByIndex(t, 0) == from)

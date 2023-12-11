@@ -10,7 +10,7 @@
 #ifndef SET_H
 #define SET_H
 
-#include "hash_table.h"
+#include <stdbool.h>
 
 /**
  * @typedef set

@@ -42,7 +42,7 @@ void printNFA(nondeterministic_finite_automaton nfa)
     print(L"Q = {");
     for (unsigned int i = 0; i < getCardinality(states); i++)
     {
-        word state = traverse(states);
+        word state = drawFromSet(states);
         print(L"%lw", state);
         if (i < getCardinality(states) - 1)
             print(L", ");
