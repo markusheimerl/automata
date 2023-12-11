@@ -5,9 +5,8 @@
 #include <stddef.h>
 
 static const unsigned int default_table_size = 100;
-typedef struct hash_table_ *hash_table;
 
-struct hash_table_
+struct hash_table
 {
     void **table;
     unsigned int table_size;
@@ -15,23 +14,23 @@ struct hash_table_
     unsigned int traversal_index;
 };
 
-static hash_table HashTable(unsigned int table_size)
+static struct hash_table *HashTable(unsigned int table_size)
 {
-    hash_table newTable = (hash_table)malloc(sizeof(struct hash_table_));
-    newTable->table = (void **)calloc(table_size, sizeof(void *));
-    newTable->table_size = table_size;
-    newTable->full_size = 0;
-    newTable->traversal_index = 0;
-    return newTable;
+    struct hash_table *t = (struct hash_table *)malloc(sizeof(struct hash_table));
+    t->table = (void **)calloc(table_size, sizeof(void *));
+    t->table_size = table_size;
+    t->full_size = 0;
+    t->traversal_index = 0;
+    return t;
 }
 
-void freeHashTable(hash_table ht)
+void freeHashTable(struct hash_table *ht)
 {
     free(ht->table);
     free(ht);
 }
 
-void *traverse(hash_table ht)
+void *traverse(struct hash_table *ht)
 {
     void *temp = ht->table[ht->traversal_index];
 
@@ -57,7 +56,7 @@ static unsigned int hash(void *data, unsigned int table_size)
     return (unsigned int)value % table_size;
 }
 
-void insert(hash_table ht, void *data)
+void insert(struct hash_table *ht, void *data)
 {
     unsigned int idx = hash(data, ht->table_size);
     void *temp = ht->table[idx];
@@ -70,7 +69,7 @@ void insert(hash_table ht, void *data)
             unsigned int number_of_previous_resizes = old_table_size / default_table_size;
             unsigned long int new_table_size_long_int = (unsigned long int)old_table_size + (unsigned long int)default_table_size * number_of_previous_resizes;
             assert(new_table_size_long_int <= UINT_MAX);
-            hash_table temp_ht = HashTable((unsigned int)new_table_size_long_int);
+            struct hash_table *temp_ht = HashTable((unsigned int)new_table_size_long_int);
 
             for (unsigned int j = 0; j < old_table_size; j++)
             {
@@ -96,7 +95,7 @@ void insert(hash_table ht, void *data)
     ht->full_size++;
 }
 
-bool find(hash_table ht, void *data)
+bool find(struct hash_table *ht, void *data)
 {
     unsigned int idx = hash(data, ht->table_size);
     void *temp = ht->table[idx];
@@ -114,7 +113,7 @@ bool find(hash_table ht, void *data)
     return true;
 }
 
-bool take_out(hash_table ht, void *data)
+bool take_out(struct hash_table *ht, void *data)
 {
     unsigned int idx = hash(data, ht->table_size);
     void *temp = ht->table[idx];
@@ -133,7 +132,7 @@ bool take_out(hash_table ht, void *data)
     return true;
 }
 
-unsigned int getSize(hash_table ht)
+unsigned int getSize(struct hash_table *ht)
 {
     return ht->full_size;
 }

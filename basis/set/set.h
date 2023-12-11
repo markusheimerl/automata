@@ -16,7 +16,7 @@
  * @typedef set
  * @brief A typedef for sets represented using hash tables.
  */
-typedef struct hash_table_ *set;
+typedef struct hash_table *set;
 
 /**
  * @fn set Set()
