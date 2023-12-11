@@ -14,8 +14,17 @@ struct hash_table
     unsigned int traversal_index;
 };
 
+enum
+{
+    MAX_TABLES = 100000
+};
+
+struct hash_table hash_tables[MAX_TABLES] = {0};
+void **tables[MAX_TABLES] = {0};
+
 static struct hash_table *HashTable(unsigned int table_size)
 {
+    // struct hash_table ht = {0};
     struct hash_table *t = (struct hash_table *)malloc(sizeof(struct hash_table));
     t->table = (void **)calloc(table_size, sizeof(void *));
     t->table_size = table_size;

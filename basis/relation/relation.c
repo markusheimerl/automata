@@ -1,7 +1,6 @@
 #include "relation.h"
 #include "n_tuple.h"
 #include <assert.h>
-#include <stddef.h>
 
 relation Relation()
 {
