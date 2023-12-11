@@ -1,12 +1,12 @@
 #ifndef DETERMINISTIC_FINITE_AUTOMATON_H
 #define DETERMINISTIC_FINITE_AUTOMATON_H
 
+#include "nondeterministic_finite_automaton.h"
 #include "delta_function.h"
 #include "letter.h"
 #include "n_tuple.h"
 #include "set.h"
 #include "word.h"
-#include "nondeterministic_finite_automaton/nondeterministic_finite_automaton.h"
 
 typedef n_tuple deterministic_finite_automaton;
 
