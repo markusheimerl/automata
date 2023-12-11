@@ -1,10 +1,6 @@
-#include "n_tuple.h"
 #include "nondeterministic_finite_automaton.h"
-#include "set.h"
 #include <assert.h>
 #include <locale.h>
-#include <stdio.h>
-#include <stdlib.h>
 
 void regexNFATest(void)
 {
