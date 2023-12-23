@@ -3,12 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define DEFAULT_SIZE 100
-
-enum
-{
-    default_size_of_the_universe = 100000
-};
+#define DEFAULT_UNIVERSE_SIZE 100000
+#define DEFAULT_SET_SIZE 100
 
 struct set_
 {
@@ -17,7 +13,7 @@ struct set_
     void **data;
 };
 
-set universe_of_discourse[default_size_of_the_universe] = {NULL};
+set universe_of_discourse[DEFAULT_UNIVERSE_SIZE] = {NULL};
 
 static set Set_(unsigned int size)
 {
@@ -32,7 +28,7 @@ set Set()
 {
     if (universe_of_discourse[0] == NULL)
     {
-        universe_of_discourse[0] = Set_(DEFAULT_SIZE);
+        universe_of_discourse[0] = Set_(DEFAULT_SET_SIZE);
         return universe_of_discourse[0];
     }
     else
@@ -45,7 +41,7 @@ bool isObjectASet(void *p)
 {
     assert(p != NULL);
 
-    for (unsigned int i = 0; i < default_size_of_the_universe; i++)
+    for (unsigned int i = 0; i < DEFAULT_UNIVERSE_SIZE; i++)
     {
         if (universe_of_discourse[i] == p)
         {
@@ -89,7 +85,7 @@ void *drawFromSet(set s)
 
 static set checkForIdenticalSetInUniverse(set s)
 {
-    for (unsigned int i = 0; i < default_size_of_the_universe; i++)
+    for (unsigned int i = 0; i < DEFAULT_UNIVERSE_SIZE; i++)
     {
         set u_s = universe_of_discourse[i];
 
@@ -133,7 +129,7 @@ set addToSet(set s, void *object)
     unsigned int size = 0;
     if (find(s, NULL) == -1)
     {
-        size = s->size * ((s->size % DEFAULT_SIZE) * 2);
+        size = s->size * ((s->size % DEFAULT_SET_SIZE) * 2);
     }
     else
     {
