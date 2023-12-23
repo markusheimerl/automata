@@ -120,6 +120,7 @@ static set checkForIdenticalSetInUniverse(set s)
     }
 
     assert(false && "Universe is full.");
+    return NULL;
 }
 
 set addToSet(set s, void *object)
