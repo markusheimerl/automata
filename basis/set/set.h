@@ -3,7 +3,7 @@
 
 #include <stdbool.h>
 
-typedef struct hash_table *set;
+typedef struct set_ *set;
 
 set Set(void);
 set addToSet(set s, void *object);

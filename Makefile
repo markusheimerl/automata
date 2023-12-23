@@ -8,11 +8,17 @@ OBJS := $(SRC:.c=.o)
 DEPS := $(OBJS:.o=.d)
 TARGET := executable.out
 
-# Debug settings
-CFLAGS_DEBUG := -std=iso9899:1999 -g -Wall -Wextra -Wshadow -Wpedantic -Wstrict-prototypes -Wstrict-aliasing -Wstrict-overflow -Wconversion -Werror -fsanitize=address -fsanitize=undefined -Wl,-z,relro,-z,now -MMD -MP $(shell find . -type d -not -path '*/\.*' | sed 's/^/-I/')
+# Base flags
+CFLAGS_BASE := -std=iso9899:1999 -Wall -Wextra -Wshadow -Wpedantic -Wstrict-prototypes -Wstrict-aliasing -Wstrict-overflow -Wconversion -Werror -Wl,-z,relro,-z,now -MMD -MP $(shell find . -type d -not -path '*/\.*' | sed 's/^/-I/')
 
-# Release settings
-CFLAGS_RELEASE := -std=iso9899:1999 -O3 -march=native -funroll-loops -flto -Wall -Wextra -Wshadow -Wpedantic -Wstrict-prototypes -Wstrict-aliasing -Wstrict-overflow -Wconversion -Werror -Wl,-z,relro,-z,now -MMD -MP $(shell find . -type d -not -path '*/\.*' | sed 's/^/-I/')
+# Debug settings
+CFLAGS_DEBUG := $(CFLAGS_BASE) -g -fsanitize=undefined -fsanitize=address
+
+# Release with assert settings
+CFLAGS_RELEASE_ASSERT := $(CFLAGS_BASE) -O3 -march=native -funroll-loops -flto
+
+# Release settings (no assert)
+CFLAGS_RELEASE := $(CFLAGS_RELEASE_ASSERT) -DNDEBUG
 
 # Default target
 all: debug
@@ -22,7 +28,12 @@ debug: CFLAGS := $(CFLAGS_DEBUG)
 debug: $(TARGET)
 	@rm -f main.c main.o main.d
 
-# Release target
+# Release with assert target
+release_assert: CFLAGS := $(CFLAGS_RELEASE_ASSERT)
+release_assert: $(TARGET)
+	@rm -f main.c main.o main.d
+
+# Release target (no assert)
 release: CFLAGS := $(CFLAGS_RELEASE)
 release: $(TARGET)
 	@rm -f main.c main.o main.d
