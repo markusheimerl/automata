@@ -2,6 +2,36 @@
 #include <assert.h>
 #include <locale.h>
 
+void setTest(void)
+{
+    set s = Set();
+    s = addToSet(s, &letter_b);
+    s = addToSet(s, &letter_c);
+    s = addToSet(s, &letter_b);
+    s = addToSet(s, &letter_d);
+
+    assert(getCardinality(s) == 3);
+    assert(isElementOf(s, &letter_b));
+    assert(isElementOf(s, &letter_c));
+    assert(isElementOf(s, &letter_d));
+    for (unsigned int i = 0; i < 47; i++)
+    {
+        void *p = drawFromSet(s);
+        assert(p == &letter_b || p == &letter_c || p == &letter_d);
+    }
+}
+
+void orderedPairTest(void)
+{
+    ordered_pair p = OrderedPair(&letter_a, &letter_b);
+    assert(getFirst(p) == &letter_a);
+    assert(getSecond(p) == &letter_b);
+
+    p = OrderedPair(&letter_c, &letter_c);
+    assert(getFirst(p) == &letter_c);
+    assert(getSecond(p) == &letter_c);
+}
+
 void regexNFATest(void)
 {
     // Simpler regex: (ab|cd)*(ef|gh)
@@ -37,6 +67,8 @@ int main_automata(void)
 {
     (void)setlocale(LC_ALL, "");
     regexNFATest();
+    // setTest();
+    // orderedPairTest();
 
     return 0;
 }

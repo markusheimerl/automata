@@ -72,11 +72,12 @@ long int find(set s, void *object)
 static void *draw(set s)
 {
     unsigned int loops = 0;
-    while (s->data[s->index] == NULL && loops < s->size)
+    do
     {
         s->index = (s->index + 1) % s->size;
         loops++;
-    }
+    } while (s->data[s->index] == NULL && loops < s->size);
+
     return s->data[s->index];
 }
 
@@ -97,11 +98,11 @@ static set checkForIdenticalSetInUniverse(set s)
             universe_of_discourse[i] = s;
             return s;
         }
-        else if (u_s->size == s->size)
+        else if (find(u_s, NULL) == find(s, NULL))
         {
             bool identical = true;
 
-            for (unsigned int j = 0; j < u_s->size; j++)
+            for (unsigned int j = 0; j < s->size; j++)
             {
                 if (find(u_s, draw(s)) == -1)
                 {

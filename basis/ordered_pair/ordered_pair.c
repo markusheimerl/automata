@@ -6,6 +6,7 @@ ordered_pair OrderedPair(void *a, void *b)
 {
     set s_a = Set();
     s_a = addToSet(s_a, a);
+    getCardinality(s_a);
 
     set s_b = Set();
     s_b = addToSet(s_b, a);
