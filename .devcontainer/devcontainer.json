@@ -5,8 +5,7 @@
       "extensions": [
         "ms-vscode.cpptools",
         "GitHub.copilot",
-        "ms-vscode.makefile-tools",
-        "mathematic.vscode-pdf"
+        "ms-vscode.makefile-tools"
       ]
     }
   }
