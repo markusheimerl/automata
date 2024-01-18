@@ -1,5 +1,5 @@
-#ifndef DELTA_FUNCTION_H
-#define DELTA_FUNCTION_H
+#ifndef NFA_DELTA_FUNCTION_H
+#define NFA_DELTA_FUNCTION_H
 
 #include "function.h"
 #include "word.h"
@@ -14,4 +14,4 @@ set getNFADeltaFunctionValue(nfa_delta_function f, word w, letter let);
 word getWordFromNFADeltaFunctionDomainElement(set from);
 letter getLetterFromNFADeltaFunctionDomainElement(set from);
 
-#endif // DELTA_FUNCTION_H
+#endif // NFA_DELTA_FUNCTION_H

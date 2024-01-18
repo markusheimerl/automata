@@ -1,7 +1,7 @@
 #ifndef NONDETERMINISTIC_FINITE_AUTOMATON_H
 #define NONDETERMINISTIC_FINITE_AUTOMATON_H
 
-#include "delta_function.h"
+#include "nfa_delta_function.h"
 #include "letter.h"
 #include "n_tuple.h"
 #include "set.h"

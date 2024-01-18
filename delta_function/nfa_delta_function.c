@@ -1,4 +1,4 @@
-#include "delta_function.h"
+#include "nfa_delta_function.h"
 #include "n_tuple.h"
 
 nfa_delta_function NFADeltaFunction(void)
