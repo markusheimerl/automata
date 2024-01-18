@@ -5,13 +5,13 @@
 #include "word.h"
 #include "letter.h"
 
-typedef function delta_function;
+typedef function nfa_delta_function;
 
-delta_function DeltaFunction(void);
-delta_function relationToDeltaFunction(relation delta_relation);
-delta_function addToDeltaFunction(delta_function f, word w, letter let, set to);
-set getDeltaFunctionValue(delta_function f, word w, letter let);
-word getWordFromDomainElement(set from);
-letter getLetterFromDomainElement(set from);
+nfa_delta_function NFADeltaFunction(void);
+nfa_delta_function relationToNFADeltaFunction(relation delta_relation);
+nfa_delta_function addToNFADeltaFunction(nfa_delta_function f, word w, letter let, set to);
+set getNFADeltaFunctionValue(nfa_delta_function f, word w, letter let);
+word getWordFromNFADeltaFunctionDomainElement(set from);
+letter getLetterFromNFADeltaFunctionDomainElement(set from);
 
 #endif // DELTA_FUNCTION_H

@@ -3,12 +3,12 @@
 
 static set consumeLetter(nondeterministic_finite_automaton nfa, set states, letter let)
 {
-    delta_function delta = getObjectByIndex(nfa, 2);
+    nfa_delta_function delta = getObjectByIndex(nfa, 2);
     set new_states = Set();
     for (unsigned int i = 0; i < getCardinality(states); i++)
     {
         word state = drawFromSet(states);
-        set to = getDeltaFunctionValue(delta, state, let);
+        set to = getNFADeltaFunctionValue(delta, state, let);
         if (to != NULL)
             new_states = unionSet(new_states, to);
     }
@@ -20,12 +20,12 @@ static set epsilonClosure(nondeterministic_finite_automaton nfa, set states)
     if (getCardinality(states) == 0)
         return states;
 
-    delta_function delta = getObjectByIndex(nfa, 2);
+    nfa_delta_function delta = getObjectByIndex(nfa, 2);
     set new_states = Set();
     for (unsigned int i = 0; i < getCardinality(states); i++)
     {
         word state = drawFromSet(states);
-        set to = getDeltaFunctionValue(delta, state, letter_epsilon);
+        set to = getNFADeltaFunctionValue(delta, state, letter_epsilon);
         if (to != NULL)
             new_states = unionSet(new_states, to);
     }
@@ -59,14 +59,14 @@ void printNFA(nondeterministic_finite_automaton nfa)
     }
     print(L"}\n");
 
-    delta_function delta = getObjectByIndex(nfa, 2);
+    nfa_delta_function delta = getObjectByIndex(nfa, 2);
     print(L"δ = {\n");
     for (unsigned int i = 0; i < getCardinality(delta); i++)
     {
         n_tuple tuple = drawFromSet(delta);
         set from = getObjectByIndex(tuple, 0);
-        word state = getWordFromDomainElement(from);
-        letter let = getLetterFromDomainElement(from);
+        word state = getWordFromNFADeltaFunctionDomainElement(from);
+        letter let = getLetterFromNFADeltaFunctionDomainElement(from);
         set to = getObjectByIndex(tuple, 1);
 
         print(L"    ({%lw, %ll}, {", state, let);
@@ -132,7 +132,7 @@ bool runNFA(nondeterministic_finite_automaton nfa, void *inp)
     return false;
 }
 
-nondeterministic_finite_automaton NondeterministicFiniteAutomaton(set states, set alphabet, delta_function delta, word start, set final_states)
+nondeterministic_finite_automaton NondeterministicFiniteAutomaton(set states, set alphabet, nfa_delta_function delta, word start, set final_states)
 {
     return NTuple(5, states, alphabet, delta, start, final_states);
 }
@@ -150,8 +150,8 @@ nondeterministic_finite_automaton letterNFA(letter let)
     set alphabet = addToSet(Set(), let);
 
     // δ
-    delta_function delta = DeltaFunction();
-    delta = addToDeltaFunction(delta, q0, let, addToSet(Set(), q1));
+    nfa_delta_function delta = NFADeltaFunction();
+    delta = addToNFADeltaFunction(delta, q0, let, addToSet(Set(), q1));
 
     // F
     set final_states = addToSet(Set(), q1);
@@ -170,13 +170,13 @@ nondeterministic_finite_automaton concatinationNFA(nondeterministic_finite_autom
 
     set states_left = getObjectByIndex(nfa_left, 0);
     set alphabet_left = getObjectByIndex(nfa_left, 1);
-    delta_function delta_left = getObjectByIndex(nfa_left, 2);
+    nfa_delta_function delta_left = getObjectByIndex(nfa_left, 2);
     word start_left = getObjectByIndex(nfa_left, 3);
     set final_states_left = getObjectByIndex(nfa_left, 4);
 
     set states_right = getObjectByIndex(nfa_right, 0);
     set alphabet_right = getObjectByIndex(nfa_right, 1);
-    delta_function delta_right = getObjectByIndex(nfa_right, 2);
+    nfa_delta_function delta_right = getObjectByIndex(nfa_right, 2);
     word start_right = getObjectByIndex(nfa_right, 3);
     set final_states_right = getObjectByIndex(nfa_right, 4);
 
@@ -213,9 +213,9 @@ nondeterministic_finite_automaton concatinationNFA(nondeterministic_finite_autom
         set from = getObjectByIndex(tuple, 0);
         set to = getObjectByIndex(tuple, 1);
 
-        word state = getWordFromDomainElement(from);
+        word state = getWordFromNFADeltaFunctionDomainElement(from);
         state = Word(2, state, letter_l);
-        letter let = getLetterFromDomainElement(from);
+        letter let = getLetterFromNFADeltaFunctionDomainElement(from);
 
         for (unsigned int j = 0; j < getCardinality(to); j++)
         {
@@ -230,9 +230,9 @@ nondeterministic_finite_automaton concatinationNFA(nondeterministic_finite_autom
         set from = getObjectByIndex(tuple, 0);
         set to = getObjectByIndex(tuple, 1);
 
-        word state = getWordFromDomainElement(from);
+        word state = getWordFromNFADeltaFunctionDomainElement(from);
         state = Word(2, state, letter_r);
-        letter let = getLetterFromDomainElement(from);
+        letter let = getLetterFromNFADeltaFunctionDomainElement(from);
 
         for (unsigned int j = 0; j < getCardinality(to); j++)
         {
@@ -263,7 +263,7 @@ nondeterministic_finite_automaton concatinationNFA(nondeterministic_finite_autom
         delta_relation = addToRelation(delta_relation, addToSet(addToSet(Set(), state), letter_epsilon), addToSet(Set(), final_state));
     }
 
-    function delta = relationToDeltaFunction(delta_relation);
+    function delta = relationToNFADeltaFunction(delta_relation);
 
     return NondeterministicFiniteAutomaton(states, alphabet, delta, start, addToSet(Set(), final_state));
 }
@@ -322,9 +322,9 @@ nondeterministic_finite_automaton unionNFA(nondeterministic_finite_automaton nfa
         set from = getObjectByIndex(tuple, 0);
         set to = getObjectByIndex(tuple, 1);
 
-        word state = getWordFromDomainElement(from);
+        word state = getWordFromNFADeltaFunctionDomainElement(from);
         state = Word(2, state, letter_l);
-        letter let = getLetterFromDomainElement(from);
+        letter let = getLetterFromNFADeltaFunctionDomainElement(from);
 
         for (unsigned int j = 0; j < getCardinality(to); j++)
         {
@@ -340,9 +340,9 @@ nondeterministic_finite_automaton unionNFA(nondeterministic_finite_automaton nfa
         set from = getObjectByIndex(tuple, 0);
         set to = getObjectByIndex(tuple, 1);
 
-        word state = getWordFromDomainElement(from);
+        word state = getWordFromNFADeltaFunctionDomainElement(from);
         state = Word(2, state, letter_r);
-        letter let = getLetterFromDomainElement(from);
+        letter let = getLetterFromNFADeltaFunctionDomainElement(from);
 
         for (unsigned int j = 0; j < getCardinality(to); j++)
         {
@@ -375,7 +375,7 @@ nondeterministic_finite_automaton unionNFA(nondeterministic_finite_automaton nfa
         delta_relation = addToRelation(delta_relation, addToSet(addToSet(Set(), state), letter_epsilon), addToSet(Set(), final_state));
     }
 
-    function delta = relationToDeltaFunction(delta_relation);
+    function delta = relationToNFADeltaFunction(delta_relation);
 
     return NondeterministicFiniteAutomaton(states, alphabet, delta, start, addToSet(Set(), final_state));
 }
@@ -387,7 +387,7 @@ nondeterministic_finite_automaton iterationNFA(nondeterministic_finite_automaton
 
     set states_iter = getObjectByIndex(nfa_iter, 0);
     set alphabet_iter = getObjectByIndex(nfa_iter, 1);
-    delta_function delta_iter = getObjectByIndex(nfa_iter, 2);
+    nfa_delta_function delta_iter = getObjectByIndex(nfa_iter, 2);
     word start_iter = getObjectByIndex(nfa_iter, 3);
     set final_states_iter = getObjectByIndex(nfa_iter, 4);
 
@@ -413,9 +413,9 @@ nondeterministic_finite_automaton iterationNFA(nondeterministic_finite_automaton
         set from = getObjectByIndex(tuple, 0);
         set to = getObjectByIndex(tuple, 1);
 
-        word state = getWordFromDomainElement(from);
+        word state = getWordFromNFADeltaFunctionDomainElement(from);
         state = Word(2, state, letter_i);
-        letter let = getLetterFromDomainElement(from);
+        letter let = getLetterFromNFADeltaFunctionDomainElement(from);
 
         for (unsigned int j = 0; j < getCardinality(to); j++)
         {
@@ -442,7 +442,7 @@ nondeterministic_finite_automaton iterationNFA(nondeterministic_finite_automaton
         delta_relation = addToRelation(delta_relation, addToSet(addToSet(Set(), state), letter_epsilon), addToSet(Set(), final_state));
     }
 
-    function delta = relationToDeltaFunction(delta_relation);
+    function delta = relationToNFADeltaFunction(delta_relation);
 
     return NondeterministicFiniteAutomaton(states, alphabet, delta, start, addToSet(Set(), final_state));
 }

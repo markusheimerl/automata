@@ -9,7 +9,7 @@
 
 typedef n_tuple nondeterministic_finite_automaton;
 
-nondeterministic_finite_automaton NondeterministicFiniteAutomaton(set states, set alphabet, delta_function delta, word start, set final_states);
+nondeterministic_finite_automaton NondeterministicFiniteAutomaton(set states, set alphabet, nfa_delta_function delta, word start, set final_states);
 void printNFA(nondeterministic_finite_automaton);
 bool runNFA(nondeterministic_finite_automaton, void *);
 
