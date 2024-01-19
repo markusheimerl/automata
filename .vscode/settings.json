@@ -1,8 +1,8 @@
 {
     "makefile.launchConfigurations": [
         {
-            "cwd": "/workspaces/automata",
-            "binaryPath": "/workspaces/automata/executable.out",
+            "cwd": "/home/markusheimerl/automata",
+            "binaryPath": "/home/markusheimerl/automata/executable.out",
             "binaryArgs": []
         }
     ],
