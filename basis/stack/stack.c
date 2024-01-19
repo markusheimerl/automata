@@ -5,7 +5,7 @@ stack Stack(void)
 {
     return Set();
 }
-
+/*
 void push(stack s, void *e)
 {
     unsigned int height = 0;
@@ -36,3 +36,4 @@ void *pop(stack s)
     removeFromSet(s, top);
     return top;
 }
+*/

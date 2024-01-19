@@ -1,5 +1,3 @@
-DUMMY := $(shell git submodule update --init --recursive)
-
 # Common settings
 CC := gcc
 REPO_NAME := $(shell basename `git rev-parse --show-toplevel`)
