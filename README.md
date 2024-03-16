@@ -1,2 +1,2 @@
-# automata
-An automata library
+# nondeterministic finite automata
+A nondeterministic finite automata library
